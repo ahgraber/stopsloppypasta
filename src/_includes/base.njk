@@ -1,0 +1,723 @@
+{% set t = i18n[locale] %}
+<!DOCTYPE html>
+<html lang="{{ t.lang }}">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{ t.title }}</title>
+  <meta name="description" content="{{ t.description }}" />
+  <link rel="preconnect" href="https://fonts.bunny.net" />
+  <link href="https://fonts.bunny.net/css?family=dm-serif-display:400,400i|dm-mono:300,400,500|lora:400,400i,500,600&display=swap" rel="stylesheet" />
+  <style>
+
+    /* ═══════════════════════════════════════════
+       TOKENS — light default, dark override
+    ═══════════════════════════════════════════ */
+    :root {
+      --bg:        #f8f8f8;
+      --surface:   #ffffff;
+      --ink:       #0d0d0d;
+      --mid:       #555555;
+      --rule:      #d8d8d8;
+      --rule-soft: #ebebeb;
+
+      --red:       #d42020;
+      --red-bg:    #fff4f4;
+      --red-border:#f5aaaa;
+      --green:     #1a7a40;
+      --green-bg:  #f0faf3;
+      --green-border:#8fd4a8;
+      --blue:      #1650a8;
+      --blue-bg:   #f0f5ff;
+      --blue-border:#99b8f0;
+
+      --mono: 'DM Mono', 'Courier New', monospace;
+      --serif: 'DM Serif Display', Georgia, serif;
+      --text: 'Lora', Georgia, serif;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg:        #111111;
+        --surface:   #1c1c1c;
+        --ink:       #f0f0f0;
+        --mid:       #aaaaaa;
+        --rule:      #333333;
+        --rule-soft: #252525;
+
+        --red:       #e25555;
+        --red-bg:    #2a1515;
+        --red-border:#7a3030;
+        --green:     #2da055;
+        --green-bg:  #0f2018;
+        --green-border:#2a6640;
+        --blue:      #6699ff;
+        --blue-bg:   #0f1a30;
+        --blue-border:#2a4480;
+      }
+    }
+
+    /* ═══════════════════════════════════════════
+       BASE
+    ═══════════════════════════════════════════ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--serif);
+      font-size: 1rem;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: var(--mid); }
+    strong { font-weight: 600; }
+    em { font-style: italic; }
+
+    /* ═══════════════════════════════════════════
+       HEADER
+    ═══════════════════════════════════════════ */
+    header {
+      border-bottom: 2px solid var(--ink);
+      padding: 3.5rem 0 2.5rem;
+    }
+
+    .header-inner {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    .kicker {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--mid);
+      margin-bottom: 0.9rem;
+    }
+
+    h1 {
+      font-size: clamp(2.8rem, 7vw, 5.5rem);
+      font-weight: 400;
+      line-height: 1.0;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.25rem;
+    }
+
+    h1 .word-stop { font-weight: bold; }
+    h1 .word-sloppy { font-style: italic; color: var(--red); }
+
+    .def {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: var(--mid);
+      line-height: 1.65;
+      border-left: 2px solid var(--rule);
+      padding-left: 1rem;
+      max-width: 640px;
+    }
+
+    .def .hw  { color: var(--ink); font-weight: 500; }
+    .def .pos { font-style: italic; }
+
+    /* ═══════════════════════════════════════════
+       NAV (section index)
+    ═══════════════════════════════════════════ */
+    .type-nav {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 1.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .type-nav a {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--mid);
+      border: 1px solid var(--rule);
+      padding: 0.3rem 0.7rem;
+      transition: border-color 0.15s, color 0.15s;
+    }
+
+    .type-nav a:hover { color: var(--ink); border-color: var(--ink); }
+
+    /* ═══════════════════════════════════════════
+       MAIN CONTAINER
+    ═══════════════════════════════════════════ */
+    main {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 1.5rem 5rem;
+    }
+
+    /* ═══════════════════════════════════════════
+       INTRO SECTION
+    ═══════════════════════════════════════════ */
+    .intro {
+      max-width: 65ch;
+      margin: 0 auto;
+      padding: 3rem 0 1rem;
+    }
+
+    .intro h2 {
+      font-size: clamp(1.4rem, 3vw, 1.9rem);
+      font-weight: 400;
+      margin-bottom: 1rem;
+      line-height: 1.2;
+    }
+
+    .intro p {
+      font-family: var(--text);
+      font-size: 1.0625rem;
+      line-height: 1.75;
+      color: var(--mid);
+      margin-bottom: 0.85rem;
+    }
+
+    /* ═══════════════════════════════════════════
+       TYPES SECTION LABEL
+    ═══════════════════════════════════════════ */
+    .section-rule {
+      border: none;
+      border-top: 2px solid var(--ink);
+      margin: 2rem 0 0;
+    }
+
+    #types h2 {
+      font-size: clamp(1.3rem, 2.5vw, 1.7rem);
+      font-weight: 400;
+      margin-bottom: 1.5rem;
+    }
+
+    /* ═══════════════════════════════════════════
+       TYPE PAIR — horizontal layout
+       example | discussion  (or reversed)
+    ═══════════════════════════════════════════ */
+    .type-pair {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2.5rem;
+      align-items: start;
+      padding: 2.5rem 0;
+      border-top: 1px solid var(--rule);
+    }
+
+    .type-pair:first-of-type { border-top: none; }
+
+    /* Reverse layout for even pairs */
+    .type-pair.flip .pair-example { order: 2; }
+    .type-pair.flip .pair-discussion { order: 1; }
+
+    /* Tablet: stack */
+    @media (max-width: 800px) {
+      .type-pair {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+      .type-pair.flip .pair-example,
+      .type-pair.flip .pair-discussion { order: unset; }
+    }
+
+    /* ── Discussion column ── */
+    .pair-discussion {
+      padding-top: 0.25rem;
+    }
+
+    .type-title {
+      font-family: var(--serif);
+      font-size: clamp(1.3rem, 2.5vw, 1.7rem);
+      font-weight: 400;
+      font-style: italic;
+      line-height: 1.2;
+      margin-bottom: 1rem;
+      color: var(--ink);
+    }
+
+    .pair-discussion p {
+      font-family: var(--text);
+      font-size: 1.0625rem;
+      line-height: 1.75;
+      color: var(--mid);
+      margin-bottom: 0.8rem;
+    }
+
+    .pair-discussion p:last-child { margin-bottom: 0; }
+
+    .pair-discussion p strong { color: var(--ink); }
+
+    /* ── Example column ── */
+    .pair-example {}
+
+    /* ═══════════════════════════════════════════
+       SCENARIO CARD
+    ═══════════════════════════════════════════ */
+    .scenario {
+      border: 1.5px solid var(--rule);
+      background: var(--surface);
+      overflow: hidden;
+    }
+
+    .scenario + .scenario {
+      margin-top: 0.75rem;
+    }
+
+    .scenario-tag {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 0.3rem 0.75rem;
+      display: inline-block;
+      color: var(--surface);
+    }
+
+    .scenario-tag.bad  { background: var(--red); }
+    .scenario-tag.good { background: var(--green); }
+
+    .scenario-body { padding: 0.9rem 1rem 1rem; }
+
+    .chat-line {
+      display: flex;
+      gap: 0.65rem;
+      margin-bottom: 0.7rem;
+      align-items: flex-start;
+    }
+    .chat-line:last-of-type { margin-bottom: 0; }
+
+    .avatar {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      font-weight: 500;
+      color: var(--mid);
+      white-space: nowrap;
+      padding-top: 0.45rem;
+      min-width: 64px;
+      flex-shrink: 0;
+    }
+
+    .bubble {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      line-height: 1.65;
+      padding: 0.6rem 0.85rem;
+      border: 1px solid var(--rule-soft);
+      background: var(--bg);
+      flex: 1;
+      min-width: 0;
+      color: var(--ink);
+    }
+
+    .bubble.bad  { border-color: var(--red-border);   background: var(--red-bg); }
+    .bubble.good { border-color: var(--green-border);  background: var(--green-bg); }
+    .bubble.ctx  { border: none; background: none; padding: 0.15rem 0; font-style: italic; color: var(--mid); }
+
+    .bubble b { font-weight: 500; display: block; margin-bottom: 0.25rem; }
+
+    .bubble > :last-child { margin-bottom: 0; }
+
+    .bubble p {
+      margin: 0 0 0.55rem;
+    }
+
+    .bubble a {
+      color: inherit;
+    }
+
+    .verdict {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      text-align: center;
+      margin-top: 0.6rem;
+      padding: 0.35rem 0.65rem;
+      line-height: 1.55;
+    }
+
+    .verdict.bad  { color: var(--red);   border: 1px dashed var(--red-border);   background: var(--red-bg); }
+    .verdict.good { color: var(--green); border: 1px dashed var(--green-border);  background: var(--green-bg); }
+
+    /* ═══════════════════════════════════════════
+       WHY IT MATTERS
+    ═══════════════════════════════════════════ */
+    .why-section {
+      border-top: 2px solid var(--ink);
+      margin-top: 2rem;
+      padding-top: 2rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      padding-bottom: 3rem;
+    }
+
+    @media (max-width: 800px) {
+      .why-section { grid-template-columns: 1fr; gap: 1.5rem; }
+    }
+
+    .why-section h2 {
+      font-size: clamp(1.3rem, 2.5vw, 1.7rem);
+      font-weight: 400;
+      margin-bottom: 1rem;
+      grid-column: 1 / -1;
+    }
+
+    .why-text p {
+      font-family: var(--text);
+      font-size: 1.0625rem;
+      line-height: 1.75;
+      color: var(--mid);
+      margin-bottom: 0.85rem;
+    }
+
+    .why-text p strong { color: var(--ink); }
+
+    .pull-quote {
+      font-family: var(--text);
+      border-left: 3px solid var(--ink);
+      padding: 0.75rem 1.1rem;
+      font-style: italic;
+      font-size: 0.96rem;
+      line-height: 1.55;
+      margin-bottom: 1.5rem;
+      color: var(--ink);
+    }
+
+    .pull-quote cite {
+      display: block;
+      margin-top: 0.6rem;
+      font-style: normal;
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--mid);
+    }
+
+    /* ═══════════════════════════════════════════
+       RULES
+    ═══════════════════════════════════════════ */
+    .rules-section {
+      border-top: 2px solid var(--ink);
+      padding-top: 2rem;
+      margin-top: 0;
+    }
+
+    .rules-section h2 {
+      font-size: clamp(1.3rem, 2.5vw, 1.7rem);
+      font-weight: 400;
+      margin-bottom: 1.5rem;
+    }
+
+    .rules {
+      counter-reset: rule;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 0;
+      border: 1.5px solid var(--blue-border);
+      background: var(--blue-bg);
+    }
+
+    .rule {
+      counter-increment: rule;
+      padding: 1.1rem 1.2rem;
+      border-bottom: 1px solid var(--blue-border);
+      display: grid;
+      grid-template-columns: 2rem 1fr;
+      gap: 0.75rem;
+      align-items: start;
+    }
+
+    .rule:last-child { border-bottom: none; }
+
+    /* On wide screens, two columns means some rules have no bottom border */
+    @media (min-width: 600px) {
+      .rules { grid-template-columns: 1fr 1fr; }
+      .rule:nth-last-child(-n+2):nth-child(odd),
+      .rule:last-child { border-bottom: none; }
+      /* right column rules: add left border instead */
+      .rule:nth-child(even) { border-left: 1px solid var(--blue-border); }
+    }
+
+    .rule-num {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      font-weight: 500;
+      color: var(--blue);
+      padding-top: 0.2rem;
+    }
+    .rule-num::before { content: counter(rule, decimal-leading-zero); }
+
+    .rule-text strong {
+      display: block;
+      font-family: var(--serif);
+      font-size: 1rem;
+      font-style: italic;
+      font-weight: 400;
+      margin-bottom: 0.25rem;
+      color: var(--ink);
+    }
+
+    .rule-text p {
+      margin: 0;
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      line-height: 1.6;
+      color: var(--mid);
+    }
+
+    .rule-text > :last-child { margin-bottom: 0; }
+
+    .rule-text a {
+      color: inherit;
+    }
+
+    /* ═══════════════════════════════════════════
+       CODA
+    ═══════════════════════════════════════════ */
+    .coda {
+      max-width: 65ch;
+      margin: 2.5rem auto 0;
+      border-top: 1px solid var(--rule);
+      padding-top: 2rem;
+    }
+
+    .coda p {
+      font-family: var(--text);
+      font-size: 1.0625rem;
+      line-height: 1.75;
+      color: var(--mid);
+      margin-bottom: 0.85rem;
+    }
+
+    .coda p strong { color: var(--ink); }
+
+    /* ═══════════════════════════════════════════
+       FOOTER
+    ═══════════════════════════════════════════ */
+    footer {
+      border-top: 1px solid var(--rule);
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 1.25rem 1.5rem;
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--mid);
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    footer a { color: var(--mid); }
+
+    footer .source-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35em;
+    }
+
+    footer .source-link svg {
+      width: 0.9em;
+      height: 0.9em;
+      flex-shrink: 0;
+    }
+
+    /* ═══════════════════════════════════════════
+       FURTHER READING
+    ═══════════════════════════════════════════ */
+    .further-reading {
+      border-top: 2px solid var(--ink);
+      padding-top: 2rem;
+      margin-top: 2rem;
+    }
+
+    .further-reading h2 {
+      font-size: clamp(1.3rem, 2.5vw, 1.7rem);
+      font-weight: 400;
+      margin-bottom: 1rem;
+    }
+
+    .further-reading ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .further-reading a {
+      font-family: var(--text);
+      font-size: 1.0625rem;
+      color: var(--mid);
+      text-decoration: none;
+      border-bottom: 1px solid var(--rule);
+      padding-bottom: 0.4rem;
+      display: block;
+      transition: color 0.15s, border-color 0.15s;
+    }
+
+    .further-reading li:last-child a {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .further-reading a:hover {
+      color: var(--ink);
+      border-color: var(--ink);
+    }
+
+    /* ═══════════════════════════════════════════
+       FADE-IN ANIMATION
+    ═══════════════════════════════════════════ */
+    @keyframes up {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    header       { animation: up 0.4s ease 0.05s both; }
+    .type-nav    { animation: up 0.4s ease 0.10s both; }
+    .intro       { animation: up 0.4s ease 0.15s both; }
+    .type-pair   { animation: up 0.4s ease 0.20s both; }
+    .why-section { animation: up 0.4s ease 0.25s both; }
+    .rules-section { animation: up 0.4s ease 0.30s both; }
+    .coda        { animation: up 0.4s ease 0.35s both; }
+
+    /* ═══════════════════════════════════════════
+       MOBILE TWEAKS
+    ═══════════════════════════════════════════ */
+    @media (max-width: 480px) {
+      h1 { font-size: 2.5rem; }
+      .avatar { min-width: 50px; }
+      footer { flex-direction: column; }
+    }
+
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <h1><span class="word-stop">Stop</span> <span class="word-sloppy">Sloppypasta</span></h1>
+    <div class="def">
+      <span class="hw">{{ t.header.headword }}</span>&nbsp;
+      <span class="pos">{{ t.header.pos }}</span>&nbsp;
+      {{ t.header.definitionHtml | safe }}
+    </div>
+  </div>
+</header>
+
+<nav class="type-nav" aria-label="{{ t.nav.ariaLabel }}">
+  {% for link in t.nav.links %}
+  <a href="{{ link.href }}">{{ link.text }}</a>
+  {% endfor %}
+</nav>
+
+<main>
+  {% for section in t.sections %}
+  {% if section.kind == "intro" %}
+  <div class="intro" id="intro">
+    <h2>{{ section.heading }}</h2>
+    {{ section.bodyHtml | safe }}
+  </div>
+  {% elif section.kind == "types" %}
+  <div id="types">
+  <hr class="section-rule" />
+  <h2>{{ section.heading }}</h2>
+
+  {% for type in section.items %}
+  <div class="type-pair{% if type.flip %} flip{% endif %}" id="{{ type.id }}">
+
+    <div class="pair-example">
+      {% for scenario in type.scenarios %}
+      <div class="scenario">
+        <span class="scenario-tag {{ scenario.tag.class }}">{{ scenario.tag.label }}</span>
+        <div class="scenario-body">
+          {% for line in scenario.textlines %}
+          <div class="chat-line">
+            <span class="avatar">{{ line.avatar }}</span>
+            <div class="bubble{% if line.bubbleClass %} {{ line.bubbleClass }}{% endif %}">{{ line.textHtml | safe }}</div>
+          </div>
+          {% endfor %}
+          <div class="verdict {{ scenario.verdict.class }}">{{ scenario.verdict.textHtml | safe }}</div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="pair-discussion">
+      <h2 class="type-title">{{ type.title }}</h2>
+      {{ type.bodyHtml | safe }}
+    </div>
+
+  </div>
+  {% endfor %}
+  </div>
+  {% elif section.kind == "why" %}
+  <div class="why-section" id="why">
+    <h2>{{ section.heading }}</h2>
+    <div class="why-text">
+      {{ section.bodyHtml | safe }}
+    </div>
+    <div class="why-quotes">
+      {% for quote in section.quotes %}
+      <div class="pull-quote">
+        {{ quote.text }}
+        <cite>
+          {{ quote.cite }}{% if quote.citeLink %}, <a href="{{ quote.citeLink.href }}" target="_blank" rel="noopener"><em>{{ quote.citeLink.text }}</em></a>{% endif %}
+        </cite>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% elif section.kind == "rules" %}
+  <div class="rules-section" id="rules">
+    <h2>{{ section.heading }}</h2>
+    <div class="rules">
+      {% for rule in section.items %}
+      <div class="rule">
+        <span class="rule-num"></span>
+        <div class="rule-text">
+          <strong>{{ rule.title }}</strong>
+          {{ rule.textHtml | safe }}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% elif section.kind == "coda" %}
+  <div class="coda" id="coda">
+    {{ section.bodyHtml | safe }}
+  </div>
+  {% elif section.kind == "furtherReading" %}
+  <section class="further-reading">
+    <h2>{{ section.heading }}</h2>
+    <ul>
+      {% for link in section.links %}
+      <li><a href="{{ link.href }}" target="_blank" rel="noopener">{{ link.text }}</a></li>
+      {% endfor %}
+    </ul>
+  </section>
+  {% endif %}
+  {% endfor %}
+
+</main>
+
+<footer>
+  <span>inspired by {% for link in t.footer.inspired %}<a href="{{ link.href }}" target="_blank" rel="noopener">{{ link.text }}</a>{% if not loop.last %} · {% endif %}{% endfor %}</span>
+  <span><a class="source-link" href="{{ t.footer.source.href }}" target="_blank" rel="noopener"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 98 96" aria-hidden="true"><path fill-rule="evenodd" clip-rule="evenodd" d="M48.854 0C21.839 0 0 22 0 49.217c0 21.756 13.993 40.172 33.405 46.69 2.427.49 3.316-1.059 3.316-2.362 0-1.141-.08-5.052-.08-9.127-13.59 2.934-16.42-5.867-16.42-5.867-2.184-5.704-5.42-7.17-5.42-7.17-4.448-3.015.324-3.015.324-3.015 4.934.326 7.523 5.052 7.523 5.052 4.367 7.496 11.404 5.378 14.235 4.074.404-3.178 1.699-5.378 3.074-6.6-10.839-1.141-22.243-5.378-22.243-24.283 0-5.378 1.94-9.778 5.014-13.2-.485-1.222-2.184-6.275.486-13.038 0 0 4.125-1.304 13.426 5.052a46.97 46.97 0 0 1 12.214-1.63c4.125 0 8.33.571 12.213 1.63 9.302-6.356 13.427-5.052 13.427-5.052 2.67 6.763.97 11.816.485 13.038 3.155 3.422 5.015 7.822 5.015 13.2 0 18.905-11.404 23.06-22.324 24.283 1.78 1.548 3.316 4.481 3.316 9.126 0 6.6-.08 11.897-.08 13.526 0 1.304.89 2.853 3.316 2.364 19.412-6.52 33.405-24.935 33.405-46.691C97.707 22 75.788 0 48.854 0z" fill="currentColor"/></svg>{{ t.footer.source.text }}</a></span>
+</footer>
+
+</body>
+</html>

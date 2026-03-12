@@ -1,5 +1,8 @@
 # gitignore
 
+# git
+.worktrees/
+
 # Editors
 .vscode/
 *.profraw
@@ -24,6 +27,7 @@ Thumbs.db
 *.iso
 *.log
 *.old
+*old*
 *.zip
 .direnv/
 .logs/
@@ -36,6 +40,14 @@ TODO.md
 *pytest*
 *cache*
 node_modules/
+
+# ai
+.*mcp*/
+.claude/
+docs/superpowers
+
+# generated files
+_site/
 
 # retain files
 !.gitkeep

@@ -1,0 +1,62 @@
+lang: en
+title: "Stop Sloppypasta: Don't paste raw LLM output at people"
+description: "Sloppypasta: verbatim LLM output pasted at people. Why it's rude and what to do instead."
+
+header:
+  headword: "slop·py·pas·ta"
+  pos: "n."
+  definition: |
+    Verbatim LLM output copy-pasted at someone, unread, unedited, and unrequested.
+    From _slop_ (low-quality AI-generated content) + _copypasta_ (text copied and pasted, often as meme, without critical thought). It is considered rude because it asks the recipient to do work the sender did not bother to do themselves.
+
+nav:
+  ariaLabel: "Page sections"
+
+sections:
+  - kind: intro
+    navLabel: "Intro"
+    file: intro.md
+  - kind: types
+    navLabel: "Examples"
+    heading: "Examples"
+    files:
+      - types/01-eager-beaver.md
+      - types/02-oracle.md
+      - types/03-ghostwriter.md
+  - kind: why
+    navLabel: "Why it matters"
+    file: why.md
+  - kind: rules
+    navLabel: "Rules"
+    heading: "Simple guidelines"
+    files:
+      - rules/01-read.md
+      - rules/02-verify.md
+      - rules/03-distill.md
+      - rules/04-disclose.md
+      - rules/05-do-not-send-unasked.md
+      - rules/06-send-a-link.md
+  - kind: coda
+    navLabel: "Coda"
+    file: coda.md
+  - kind: furtherReading
+    heading: "Further reading"
+    links:
+      - href: "https://distantprovince.by/posts/its-rude-to-show-ai-output-to-people/"
+        text: "It's Rude to Show AI Output to People"
+      - href: "https://simonwillison.net/2023/Aug/27/wordcamp-llms/#personal-ai-ethics"
+        text: "Personal AI Ethics by Simon Willison"
+      - href: "https://noellevandijk.com/ai-manifesto/"
+        text: "AI Manifesto"
+      - href: "https://ai-manifesto.dev/"
+        text: "Using AI Responsibly in Development & Collaboration"
+
+footer:
+  source:
+    href: "https://github.com/ahgraber/stopsloppypasta"
+    text: "open source"
+  inspired:
+    - href: "https://nohello.net"
+      text: "nohello.net"
+    - href: "https://dontasktoask.com"
+      text: "dontasktoask.com"
