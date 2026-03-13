@@ -13,6 +13,7 @@ disable = [
   "MD014", # Dollar signs used before commands; commands show outputs
   # "MD028", # Blank line inside blockquote
   "MD033", # Inline HTML tags
+  "MD036", # Emphasis used instead of a heading
   "MD041", # Require title
   "MD052", # Reference link # seems to not follow footnote links
   "MD060", # Table spacing # Can interfere with mdformat
