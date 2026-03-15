@@ -413,27 +413,54 @@
       margin-top: 1.5rem;
     }
 
+    .why-content-wrap {
+      position: relative;
+      max-height: 130px;
+      overflow: hidden;
+    }
+
+    .why-expandable.open .why-content-wrap {
+      max-height: none;
+      overflow: visible;
+    }
+
+    .why-peek-fade {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 90px;
+      background: linear-gradient(to bottom, transparent, var(--bg));
+      pointer-events: none;
+    }
+
+    .why-expandable.open .why-peek-fade {
+      display: none;
+    }
+
     .why-summary {
-      list-style: none;
+      appearance: none;
+      -webkit-appearance: none;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 0.75rem;
-      padding: 0.65rem 1rem;
-      border: 1px solid var(--rule);
+      padding: 0.45rem 1rem;
+      background: var(--ink);
+      color: var(--bg);
+      border: none;
+      width: 100%;
       font-family: var(--mono);
       font-size: 0.72rem;
       font-weight: 500;
       letter-spacing: 0.1em;
       text-transform: uppercase;
-      color: var(--mid);
       cursor: pointer;
       user-select: none;
-      transition: color 0.15s, border-color 0.15s;
+      transition: opacity 0.15s;
     }
 
-    .why-summary::-webkit-details-marker { display: none; }
-    .why-summary:hover { color: var(--ink); border-color: var(--ink); }
+    .why-summary:hover { opacity: 0.85; }
 
     @keyframes chevron-pulse {
       0%, 100% { opacity: 1; }
@@ -442,19 +469,17 @@
 
     .why-summary-chevron {
       flex-shrink: 0;
-      width: 0.7em;
-      height: 0.7em;
+      width: 0.65em;
+      height: 0.65em;
       border-right: 1.5px solid currentColor;
       border-bottom: 1.5px solid currentColor;
       transform: rotate(45deg);
       transition: transform 0.2s;
-      margin-top: -0.2em;
       animation: chevron-pulse 2.4s ease-in-out infinite;
     }
 
-    details[open] .why-summary-chevron {
+    .why-expandable.open .why-summary-chevron {
       transform: rotate(-135deg);
-      margin-top: 0.2em;
       animation: none;
     }
 
@@ -792,27 +817,34 @@
       </table>
     </div>
     {% endif %}
-    <details class="why-details">
-      <summary class="why-summary">
-        <span>Read the full essay</span>
-        <span class="why-summary-chevron" aria-hidden="true"></span>
-      </summary>
-      <div class="why-expanded">
-        <div class="why-text">
-          {{ section.bodyHtml | safe }}
-        </div>
-        <div class="why-quotes">
-          {% for quote in section.quotes %}
-          <div class="pull-quote">
-            {{ quote.text }}
-            <cite>
-              {{ quote.cite }}{% if quote.citeLink %}, <a href="{{ quote.citeLink.href }}" target="_blank" rel="noopener"><em>{{ quote.citeLink.text }}</em></a>{% endif %}
-            </cite>
+    <div class="why-details">
+      <div class="why-expandable">
+        <div class="why-content-wrap">
+          <div class="why-expanded">
+            <div class="why-text">
+              {{ section.bodyHtml | safe }}
+            </div>
+            <div class="why-quotes">
+              {% for quote in section.quotes %}
+              <div class="pull-quote">
+                {{ quote.text }}
+                <cite>
+                  {{ quote.cite }}{% if quote.citeLink %}, <a href="{{ quote.citeLink.href }}" target="_blank" rel="noopener"><em>{{ quote.citeLink.text }}</em></a>{% endif %}
+                </cite>
+              </div>
+              {% endfor %}
+            </div>
           </div>
-          {% endfor %}
+          <div class="why-peek-fade"></div>
         </div>
+        <button class="why-summary"
+          onclick="var e=this.closest('.why-expandable');e.classList.toggle('open');this.setAttribute('aria-expanded',e.classList.contains('open'))"
+          aria-expanded="false">
+          <span>Read the full essay</span>
+          <span class="why-summary-chevron" aria-hidden="true"></span>
+        </button>
       </div>
-    </details>
+    </div>
   </div>
   {% elif section.kind == "rules" %}
   <div class="rules-section" id="rules">
