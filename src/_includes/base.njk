@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{{ t.title }}</title>
   <meta name="description" content="{{ t.description }}" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍝</text></svg>" />
   <link rel="preconnect" href="https://fonts.bunny.net" />
   <link href="https://fonts.bunny.net/css?family=dm-serif-display:400,400i|dm-mono:300,400,500|lora:400,400i,500,600&display=swap" rel="stylesheet" />
   <style>
@@ -31,6 +32,8 @@
       --blue-bg:   #f0f5ff;
       --blue-border:#99b8f0;
 
+      --link:      #484848;
+
       --mono: 'DM Mono', 'Courier New', monospace;
       --serif: 'DM Serif Display', Georgia, serif;
       --text: 'Lora', Georgia, serif;
@@ -54,6 +57,8 @@
         --blue:      #6699ff;
         --blue-bg:   #0f1a30;
         --blue-border:#2a4480;
+
+        --link:      #bbbbbb;
       }
     }
 
@@ -72,7 +77,7 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    a { color: var(--mid); }
+    a { color: var(--link); text-decoration: underline; }
     strong { font-weight: 600; }
     em { font-style: italic; }
 
@@ -357,21 +362,112 @@
       border-top: 2px solid var(--ink);
       margin-top: 2rem;
       padding-top: 2rem;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 3rem;
       padding-bottom: 3rem;
-    }
-
-    @media (max-width: 800px) {
-      .why-section { grid-template-columns: 1fr; gap: 1.5rem; }
     }
 
     .why-section h2 {
       font-size: clamp(1.3rem, 2.5vw, 1.7rem);
       font-weight: 400;
-      margin-bottom: 1rem;
-      grid-column: 1 / -1;
+      margin-bottom: 1.5rem;
+    }
+
+    /* ── Synthesis table ── */
+    .why-table {
+      overflow-x: auto;
+      margin-bottom: 0;
+    }
+
+    .why-table table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      line-height: 1.6;
+    }
+
+    .why-table th,
+    .why-table td {
+      padding: 0.55rem 0.9rem;
+      border: 1px solid var(--rule);
+      vertical-align: top;
+      color: var(--mid);
+    }
+
+    .why-table th {
+      background: var(--surface);
+      font-weight: 500;
+      color: var(--ink);
+      letter-spacing: 0.05em;
+      text-align: left;
+    }
+
+    .why-table td:first-child {
+      font-weight: 500;
+      color: var(--ink);
+      white-space: nowrap;
+      background: var(--surface);
+    }
+
+    /* ── Expand/collapse ── */
+    .why-details {
+      margin-top: 1.5rem;
+    }
+
+    .why-summary {
+      list-style: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      padding: 0.65rem 1rem;
+      border: 1px solid var(--rule);
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--mid);
+      cursor: pointer;
+      user-select: none;
+      transition: color 0.15s, border-color 0.15s;
+    }
+
+    .why-summary::-webkit-details-marker { display: none; }
+    .why-summary:hover { color: var(--ink); border-color: var(--ink); }
+
+    @keyframes chevron-pulse {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.25; }
+    }
+
+    .why-summary-chevron {
+      flex-shrink: 0;
+      width: 0.7em;
+      height: 0.7em;
+      border-right: 1.5px solid currentColor;
+      border-bottom: 1.5px solid currentColor;
+      transform: rotate(45deg);
+      transition: transform 0.2s;
+      margin-top: -0.2em;
+      animation: chevron-pulse 2.4s ease-in-out infinite;
+    }
+
+    details[open] .why-summary-chevron {
+      transform: rotate(-135deg);
+      margin-top: 0.2em;
+      animation: none;
+    }
+
+    /* ── Expanded content: 2-column essay + quotes ── */
+    .why-expanded {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      padding-top: 2rem;
+    }
+
+    @media (max-width: 800px) {
+      .why-expanded { grid-template-columns: 1fr; gap: 1.5rem; }
     }
 
     .why-text p {
@@ -435,7 +531,7 @@
       display: grid;
       grid-template-columns: 2rem 1fr;
       gap: 0.75rem;
-      align-items: start;
+      align-items: first baseline;
     }
 
     .rule:last-child { border-bottom: none; }
@@ -454,26 +550,32 @@
       font-size: 0.72rem;
       font-weight: 500;
       color: var(--blue);
-      padding-top: 0.2rem;
     }
     .rule-num::before { content: counter(rule, decimal-leading-zero); }
 
     .rule-text strong {
       display: block;
       font-family: var(--serif);
-      font-size: 1rem;
-      font-style: italic;
+      font-size: 1.35rem;
       font-weight: 400;
-      margin-bottom: 0.25rem;
+      margin-bottom: 0.35rem;
       color: var(--ink);
     }
 
     .rule-text p {
       margin: 0;
       font-family: var(--mono);
-      font-size: 0.72rem;
+      font-size: 0.8rem;
       line-height: 1.6;
       color: var(--mid);
+    }
+
+    .rule-text p b,
+    .rule-text p strong {
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
     }
 
     .rule-text > :last-child { margin-bottom: 0; }
@@ -667,19 +769,50 @@
   {% elif section.kind == "why" %}
   <div class="why-section" id="why">
     <h2>{{ section.heading }}</h2>
-    <div class="why-text">
-      {{ section.bodyHtml | safe }}
+    {% if section.table %}
+    <div class="why-table">
+      <table>
+        <thead>
+          <tr>
+            {% for header in section.table.headers %}
+            <th>{{ header }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in section.table.rows %}
+          <tr>
+            <td>{{ row.label }}</td>
+            {% for cell in row.cells %}
+            <td>{{ cell }}</td>
+            {% endfor %}
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
     </div>
-    <div class="why-quotes">
-      {% for quote in section.quotes %}
-      <div class="pull-quote">
-        {{ quote.text }}
-        <cite>
-          {{ quote.cite }}{% if quote.citeLink %}, <a href="{{ quote.citeLink.href }}" target="_blank" rel="noopener"><em>{{ quote.citeLink.text }}</em></a>{% endif %}
-        </cite>
+    {% endif %}
+    <details class="why-details">
+      <summary class="why-summary">
+        <span>Read the full essay</span>
+        <span class="why-summary-chevron" aria-hidden="true"></span>
+      </summary>
+      <div class="why-expanded">
+        <div class="why-text">
+          {{ section.bodyHtml | safe }}
+        </div>
+        <div class="why-quotes">
+          {% for quote in section.quotes %}
+          <div class="pull-quote">
+            {{ quote.text }}
+            <cite>
+              {{ quote.cite }}{% if quote.citeLink %}, <a href="{{ quote.citeLink.href }}" target="_blank" rel="noopener"><em>{{ quote.citeLink.text }}</em></a>{% endif %}
+            </cite>
+          </div>
+          {% endfor %}
+        </div>
       </div>
-      {% endfor %}
-    </div>
+    </details>
   </div>
   {% elif section.kind == "rules" %}
   <div class="rules-section" id="rules">
