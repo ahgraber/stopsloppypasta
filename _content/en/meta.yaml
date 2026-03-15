@@ -6,8 +6,8 @@ header:
   headword: "slop·py·pas·ta"
   pos: "n."
   definition: |
-    Verbatim LLM output copy-pasted at someone, unread, unedited, and unrequested.
-    From _slop_ (low-quality AI-generated content) + _copypasta_ (text copied and pasted, often as meme, without critical thought). It is considered rude because it asks the recipient to do work the sender did not bother to do themselves.
+    Verbatim LLM output copy-pasted at someone, unread, unrefined, and unrequested.
+    From _slop_ (low-quality AI-generated content) + _copypasta_ (text copied and pasted, often as a meme, without critical thought). It is considered rude because it asks the recipient to do work the sender did not bother to do themselves.
 
 nav:
   ariaLabel: "Page sections"
@@ -34,7 +34,7 @@ sections:
       - rules/02-verify.md
       - rules/03-distill.md
       - rules/04-disclose.md
-      - rules/05-do-not-send-unasked.md
+      - rules/05-only-when-requested.md
       - rules/06-send-a-link.md
   - kind: coda
     navLabel: "Coda"
@@ -50,6 +50,8 @@ sections:
         text: "AI Manifesto"
       - href: "https://ai-manifesto.dev/"
         text: "Using AI Responsibly in Development & Collaboration"
+      - href: "https://www.blakestockton.com/ai-writing-etiquette-manifesto/"
+        text: "AI Writing Etiquette Manifesto"
 
 footer:
   source:

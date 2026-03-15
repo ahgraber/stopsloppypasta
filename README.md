@@ -1,7 +1,7 @@
 # stopsloppypasta
 
-Sloppypasta | n. | Verbatim LLM output copy-pasted at someone, unread, unedited, and usually unrequested.
-From _slop_ (low-quality AI-generated content) + _copypasta_ (text copied and forwarded without further thought).
+Sloppypasta | n. | Verbatim LLM output copy-pasted at someone, unread, unrefined, and unrequested.
+From _slop_ (low-quality AI-generated content) + _copypasta_ (text copied and pasted, often as a meme, without critical thought).
 It is considered rude because it asks the recipient to do work the sender did not bother to do themselves.
 
 ## Content
@@ -40,3 +40,11 @@ npm run build
 ```
 
 Output goes to `_site/`.
+
+## AI Disclosure
+
+I used AI:
+
+- to help build this website.
+- to help generate examples of sloppypasta based on my original guidance
+- to proofread and review the **human-written** copy to provide a critical review to improve my arguments and ensure clarity.

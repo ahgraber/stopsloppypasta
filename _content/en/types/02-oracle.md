@@ -29,7 +29,7 @@ scenarios:
 Someone asks a specific question.
 Another person puts it into a chatbot and pastes the response as the answer.
 
-_**"ChatGPT says"**_ is the LLM-era equivalent of [LMGTFY (Let Me Google That For You)](https://lmgtfy.app/?q=what+is+lmgtfy), except worse.
+_**"ChatGPT says"**_ is the enshittified LLM-era equivalent of [LMGTFY (Let Me Google That For You)](https://lmgtfy.app/?q=what+is+lmgtfy).
 Shared as a link or a GIF, LMGTFY was easy to ignore, and clear about what it was (sarcastic commentary).
 Sloppypasta is neither.
 Recipients are left to figure out whether it's AI generated, whether it's correct, and which part actually answers the question (if it's actually relevant at all).
