@@ -1,0 +1,164 @@
+{
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+  extends: [
+    "config:recommended",
+    "helpers:pinGitHubActionDigestsToSemver",
+    ":automergePr",
+    ":configMigration",
+    ":dependencyDashboard",
+    ":disableRateLimiting",
+    ":enablePreCommit",
+    ":renovatePrefix",
+    ":semanticCommits",
+    ":separateMultipleMajorReleases",
+    ":separateMultipleMinorReleases",
+    ":separatePatchReleases",
+    ":timezone(America/New_York)",
+  ],
+  dependencyDashboard: true,
+  dependencyDashboardTitle: "Renovate Dashboard 🤖",
+  ignorePaths: ["**/*.sops.*", "**/.archive/**"],
+  schedule: ["before 5am"],
+  customManagers: [
+    {
+      customType: "regex",
+      description: "Update pre-commit hook revisions",
+      fileMatch: [
+        "(^|/).pre-commit-config.yaml$",
+      ],
+      matchStrings: [
+        // Standard: # renovate: datasource=github-tags depName=org/repo
+        "# renovate: datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)\\s+- repo: \\S+\\s+rev: \"?(?<currentValue>[^\"\\s]+)\"?",
+      ],
+      versioningTemplate: "semver-coerced",
+      datasourceTemplate: "github-tags",
+    },
+  ],
+  packageRules: [
+    // --- Labels ---
+    {
+      description: "Label major updates",
+      matchUpdateTypes: ["major"],
+      labels: ["type/major"],
+    },
+    {
+      description: "Label minor updates",
+      matchUpdateTypes: ["minor"],
+      labels: ["type/minor"],
+    },
+    {
+      description: "Label patch updates",
+      matchUpdateTypes: ["patch"],
+      labels: ["type/patch"],
+    },
+    {
+      description: "Label digest updates",
+      matchUpdateTypes: ["digest"],
+      labels: ["type/digest"],
+    },
+    {
+      description: "Label GitHub Actions updates",
+      matchManagers: ["github-actions"],
+      addLabels: ["github-action"],
+    },
+    {
+      description: "Label npm updates",
+      matchManagers: ["npm"],
+      addLabels: ["npm"],
+    },
+
+    // --- Semantic commits ---
+    {
+      description: "Semantic commits: major as feat with breaking change",
+      matchUpdateTypes: ["major"],
+      semanticCommitType: "feat",
+      commitMessagePrefix: "{{semanticCommitType}}({{semanticCommitScope}})!:",
+      commitMessageExtra: "( {{currentVersion}} → {{newVersion}} )",
+    },
+    {
+      description: "Semantic commits: minor as feat",
+      matchUpdateTypes: ["minor"],
+      semanticCommitType: "feat",
+      commitMessageExtra: "( {{currentVersion}} → {{newVersion}} )",
+    },
+    {
+      description: "Semantic commits: patch as fix",
+      matchUpdateTypes: ["patch"],
+      semanticCommitType: "fix",
+      commitMessageExtra: "( {{currentVersion}} → {{newVersion}} )",
+    },
+    {
+      description: "Semantic commits: digest as chore",
+      matchUpdateTypes: ["digest"],
+      semanticCommitType: "chore",
+      commitMessageExtra: "( {{currentDigestShort}} → {{newDigestShort}} )",
+    },
+    {
+      description: "Semantic commits: GitHub Actions as ci",
+      matchManagers: ["github-actions"],
+      semanticCommitType: "ci",
+      semanticCommitScope: "github-action",
+      commitMessageTopic: "action {{depName}}",
+    },
+
+    // --- Auto-merge ---
+    {
+      description: "Auto-merge trusted pre-commit hooks (patch)",
+      matchDatasources: ["github-tags"],
+      matchUpdateTypes: ["patch"],
+      automerge: true,
+      matchPackagePatterns: [
+        "pre-commit/pre-commit-hooks",
+        "Lucas-C/pre-commit-hooks",
+        "sirosen/texthooks",
+        "gitleaks/gitleaks",
+        "stefmolin/exif-stripper",
+        "commitizen-tools/commitizen",
+        "hukkin/mdformat",
+        "rvben/rumdl-pre-commit",
+        "biomejs/pre-commit",
+        "adrienverge/yamllint",
+        "crate-ci/typos",
+        "editorconfig-checker/editorconfig-checker.python",
+      ],
+    },
+    {
+      description: "Auto-merge GitHub Actions (minor/patch/digest)",
+      matchManagers: ["github-actions"],
+      matchUpdateTypes: ["minor", "patch", "digest"],
+      automerge: true,
+      minimumReleaseAge: "3 days",
+      ignoreTests: true,
+    },
+    {
+      description: "Auto-merge trusted GitHub Actions immediately",
+      matchManagers: ["github-actions"],
+      matchPackageNames: ["/^actions\\//", "/^renovatebot\\//"],
+      matchUpdateTypes: ["minor", "patch", "digest"],
+      automerge: true,
+      minimumReleaseAge: "1 minute",
+      ignoreTests: true,
+    },
+
+    // --- npm ---
+    {
+      description: "npm dependencies: wait 36 hours before creating PRs",
+      matchManagers: ["npm"],
+      minimumReleaseAge: "36 hours",
+    },
+    {
+      description: "Group npm devDependencies minor/patch updates",
+      matchManagers: ["npm"],
+      matchUpdateTypes: ["minor", "patch"],
+      groupName: "npm devDependencies (non-major)",
+      automerge: true,
+    },
+
+    // --- Versioning overrides ---
+    {
+      description: "Support semver versioning for specific pre-commit hooks",
+      matchDepNames: ["shellcheck-py/shellcheck-py", "scop/pre-commit-shfmt"],
+      versioning: "semver-coerced",
+    },
+  ],
+}
