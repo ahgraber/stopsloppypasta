@@ -14,21 +14,20 @@ nav:
 
 sections:
   - kind: intro
-    navLabel: "Intro"
     file: intro.md
   - kind: types
-    navLabel: "Examples"
-    heading: "Examples"
+    navLabel: "A few examples"
+    heading: "A few examples"
     files:
       - types/01-eager-beaver.md
       - types/02-oracle.md
       - types/03-ghostwriter.md
   - kind: why
-    navLabel: "Why it matters"
+    navLabel: "Why it's rude"
     file: why.md
   - kind: rules
-    navLabel: "Rules"
-    heading: "Simple guidelines"
+    navLabel: "Guidelines to do better"
+    heading: "Simple guidelines to do better"
     files:
       - rules/01-read.md
       - rules/02-verify.md
@@ -37,7 +36,6 @@ sections:
       - rules/05-only-when-requested.md
       - rules/06-send-a-link.md
   - kind: coda
-    navLabel: "Coda"
     file: coda.md
   - kind: furtherReading
     heading: "Further reading"
