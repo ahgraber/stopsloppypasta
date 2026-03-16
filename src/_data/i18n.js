@@ -1,19 +1,20 @@
-import { readFileSync } from "node:fs"
+import { existsSync, readdirSync, readFileSync } from "node:fs"
 import { dirname, join, resolve } from "node:path"
 import { fileURLToPath } from "node:url"
 import matter from "gray-matter"
 import MarkdownIt from "markdown-it"
 
 const md = new MarkdownIt()
-const contentDir = resolve(dirname(fileURLToPath(import.meta.url)), "../../../_content/en")
+const rootContentDir = resolve(dirname(fileURLToPath(import.meta.url)), "../../_content")
 
-function loadYaml(file) {
+// --- Content loading ---
+
+function loadYaml(contentDir, file) {
   const raw = readFileSync(join(contentDir, file), "utf8")
-  // Wrap in front-matter delimiters so gray-matter can parse plain YAML files
   return matter(`---\n${raw}\n---`).data
 }
 
-function loadMd(file) {
+function loadMd(contentDir, file) {
   const raw = readFileSync(join(contentDir, file), "utf8")
   const { data, content } = matter(raw)
   return { ...data, bodyHtml: md.render(content.trim()) }
@@ -44,16 +45,13 @@ function normalizeType(type) {
   }
 }
 
-function loadType(file) {
-  return normalizeType(loadMd(file))
+function loadType(contentDir, file) {
+  return normalizeType(loadMd(contentDir, file))
 }
 
-function loadRule(file) {
-  const rule = loadMd(file)
-  return {
-    ...rule,
-    textHtml: rule.bodyHtml,
-  }
+function loadRule(contentDir, file) {
+  const rule = loadMd(contentDir, file)
+  return { ...rule, textHtml: rule.bodyHtml }
 }
 
 function buildNav(nav, sections) {
@@ -68,38 +66,25 @@ function buildNav(nav, sections) {
   }
 }
 
-function buildSection(section) {
+function buildSection(contentDir, section) {
   if (section.kind === "intro" || section.kind === "why" || section.kind === "coda") {
-    return {
-      ...section,
-      ...loadMd(section.file),
-    }
+    return { ...section, ...loadMd(contentDir, section.file) }
   }
-
   if (section.kind === "types") {
-    return {
-      ...section,
-      items: (section.files ?? []).map((file) => loadType(file)),
-    }
+    return { ...section, items: (section.files ?? []).map((file) => loadType(contentDir, file)) }
   }
-
   if (section.kind === "rules") {
-    return {
-      ...section,
-      items: (section.files ?? []).map((file) => loadRule(file)),
-    }
+    return { ...section, items: (section.files ?? []).map((file) => loadRule(contentDir, file)) }
   }
-
   if (section.kind === "furtherReading") {
     return section
   }
-
   throw new Error(`Unknown section kind: ${section.kind}`)
 }
 
-export default function () {
-  const meta = loadYaml("meta.yaml")
-  const sections = (meta.sections ?? []).map((section) => buildSection(section))
+function loadLocale(contentDir) {
+  const meta = loadYaml(contentDir, "meta.yaml")
+  const sections = (meta.sections ?? []).map((section) => buildSection(contentDir, section))
 
   return {
     lang: meta.lang,
@@ -113,4 +98,18 @@ export default function () {
     sections,
     footer: meta.footer,
   }
+}
+
+// --- Discovery ---
+
+export default function () {
+  const localeDirs = readdirSync(rootContentDir, { withFileTypes: true })
+    .filter((d) => d.isDirectory() && existsSync(join(rootContentDir, d.name, "meta.yaml")))
+    .map((d) => d.name)
+
+  const result = {}
+  for (const locale of localeDirs) {
+    result[locale] = loadLocale(join(rootContentDir, locale))
+  }
+  return result
 }
