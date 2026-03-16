@@ -4,11 +4,12 @@ This directory contains the GitHub Actions workflows for linting and deployment.
 
 ## Overview
 
-| Workflow          | File                  | Trigger                                               | Purpose                                                                                            |
-| ----------------- | --------------------- | ----------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
-| Lint              | `lint.yaml`           | `push` to `main`, `pull_request`, `workflow_dispatch` | Runs changed-file linting through `prek`.                                                          |
-| Production deploy | `deploy.yaml`         | `push` to `main`, `workflow_dispatch`                 | Builds the site and deploys `_site/` to the production Cloudflare Pages project.                   |
-| Preview deploy    | `preview-deploy.yaml` | `issue_comment`                                       | Builds and deploys a PR-scoped Cloudflare Pages preview after a maintainer explicitly requests it. |
+| Workflow          | File                   | Trigger                                               | Purpose                                                                                            |
+| ----------------- | ---------------------- | ----------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| Lint              | `lint.yaml`            | `push` to `main`, `pull_request`, `workflow_dispatch` | Runs changed-file linting through `prek`.                                                          |
+| Production deploy | `deploy.yaml`          | `push` to `main`, `workflow_dispatch`                 | Builds the site and deploys `_site/` to the production Cloudflare Pages project.                   |
+| Preview deploy    | `preview-deploy.yaml`  | `issue_comment`                                       | Builds and deploys a PR-scoped Cloudflare Pages preview after a maintainer explicitly requests it. |
+| Preview cleanup   | `preview-cleanup.yaml` | `pull_request` on `closed`                            | Deletes Cloudflare Pages preview deployments associated with a closed PR's `pr-<number>` alias.    |
 
 ## Lint
 
@@ -57,6 +58,28 @@ Security model:
 2. Privileged deployment only happens after an explicit maintainer comment.
 3. The workflow checks the commenter permission level before it uses Cloudflare secrets.
 4. The checked-out PR code never receives persisted GitHub credentials.
+
+## Preview Cleanup
+
+File: `preview-cleanup.yaml`
+
+Behavior:
+
+1. Runs when a pull request closes.
+2. Lists preview deployments for the `stopsloppypasta` Cloudflare Pages project.
+3. Matches deployments associated with the PR-specific `pr-<number>` alias.
+4. Deletes each matching deployment through the Cloudflare Pages API.
+5. Logs a notice when Cloudflare refuses to delete a deployment, which can happen for the latest deployment on a branch alias.
+
+Required repository secrets:
+
+1. `CLOUDFLARE_API_TOKEN`
+2. `CLOUDFLARE_ACCOUNT_ID`
+
+Notes:
+
+1. This is best-effort cleanup because Cloudflare documents that the latest deployment for a branch cannot always be deleted.
+2. The workflow targets the stable `pr-<number>` alias used by `preview-deploy.yaml`, so it will not affect other open previews.
 
 ## Production Deploy
 

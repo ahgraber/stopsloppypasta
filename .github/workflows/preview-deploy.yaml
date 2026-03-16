@@ -74,6 +74,8 @@ jobs:
       contents: read
       issues: write
       pull-requests: read
+      deployments: write
+      statuses: write
     steps:
       - name: Checkout PR head
         uses: actions/checkout@v4
@@ -100,6 +102,7 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
           command: >-
             pages deploy _site --project-name=stopsloppypasta
             --branch=pr-${{ needs.authorize.outputs.pr_number }}
