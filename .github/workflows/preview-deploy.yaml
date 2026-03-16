@@ -52,6 +52,11 @@ jobs:
               return;
             }
 
+            if (!pr.head.repo) {
+              core.setFailed(`Pull request #${issueNumber} head repository is unavailable. The fork may have been deleted.`);
+              return;
+            }
+
             core.setOutput('pr_number', String(pr.number));
             core.setOutput('head_sha', pr.head.sha);
             core.setOutput('head_repo', pr.head.repo.full_name);
