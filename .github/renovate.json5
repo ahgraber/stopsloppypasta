@@ -15,6 +15,9 @@
     ':separatePatchReleases',
     ':timezone(America/New_York)',
   ],
+  automergeType: 'pr',
+  automergeStrategy: 'squash',
+  platformAutomerge: true,
   dependencyDashboard: true,
   dependencyDashboardTitle: 'Renovate Dashboard 🤖',
   ignorePaths: [
