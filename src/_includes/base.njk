@@ -27,16 +27,22 @@
       --rule-soft: #ebebeb;
 
       --red:       #d42020;
-      --red-bg:    #fff4f4;
+      --red-bg:    #fde8e8;
       --red-border:#f5aaaa;
       --green:     #1a7a40;
-      --green-bg:  #f0faf3;
+      --green-bg:  #d6f0e0;
       --green-border:#8fd4a8;
       --blue:      #1650a8;
-      --blue-bg:   #f0f5ff;
+      --blue-bg:   #dce8ff;
       --blue-border:#99b8f0;
 
+      --tag-bad:   #a30000;
+      --tag-good:  #0d5e30;
+      --rule-num:  #0e3f8a;
+      --on-fill:   #ffffff;
+
       --link:      #484848;
+      --radius:    2px;
 
       --mono: 'DM Mono', 'Courier New', monospace;
       --serif: 'DM Serif Display', Georgia, serif;
@@ -61,6 +67,10 @@
         --blue:      #6699ff;
         --blue-bg:   #0f1a30;
         --blue-border:#2a4480;
+
+        --tag-bad:   #8b1a1a;
+        --tag-good:  #1a4d2e;
+        --rule-num:  #80aaff;
 
         --link:      #bbbbbb;
       }
@@ -89,7 +99,7 @@
        HEADER
     ═══════════════════════════════════════════ */
     header {
-      border-bottom: 2px solid var(--ink);
+      border-bottom: 1px solid var(--rule);
       padding: 3.5rem 0 2.5rem;
     }
 
@@ -125,8 +135,8 @@
       font-size: 0.7rem;
       color: var(--mid);
       line-height: 1.65;
-      border-left: 2px solid var(--rule);
-      padding-left: 1rem;
+      border-left: 3px solid var(--mid);
+      padding-left: 1.1rem;
       max-width: 640px;
     }
 
@@ -153,13 +163,15 @@
       letter-spacing: 0.08em;
       text-transform: uppercase;
       text-decoration: none;
-      color: var(--mid);
-      border: 1px solid var(--rule);
+      color: var(--bg);
+      background: var(--ink);
+      border: none;
       padding: 0.3rem 0.7rem;
-      transition: border-color 0.15s, color 0.15s;
+      border-radius: var(--radius);
+      transition: opacity 0.15s;
     }
 
-    .type-nav a:hover { color: var(--ink); border-color: var(--ink); }
+    .type-nav a:hover { opacity: 0.8; }
 
     /* ═══════════════════════════════════════════
        MAIN CONTAINER
@@ -199,7 +211,7 @@
     ═══════════════════════════════════════════ */
     .section-rule {
       border: none;
-      border-top: 2px solid var(--ink);
+      border-top: 1px solid var(--rule);
       margin: 2rem 0 0;
     }
 
@@ -272,9 +284,9 @@
        SCENARIO CARD
     ═══════════════════════════════════════════ */
     .scenario {
-      border: 1.5px solid var(--rule);
       background: var(--surface);
       overflow: hidden;
+      border-radius: var(--radius);
     }
 
     .scenario + .scenario {
@@ -289,11 +301,11 @@
       text-transform: uppercase;
       padding: 0.3rem 0.75rem;
       display: inline-block;
-      color: var(--surface);
+      color: var(--on-fill);
     }
 
-    .scenario-tag.bad  { background: var(--red); }
-    .scenario-tag.good { background: var(--green); }
+    .scenario-tag.bad  { background: var(--tag-bad); }
+    .scenario-tag.good { background: var(--tag-good); }
 
     .scenario-body { padding: 0.9rem 1rem 1rem; }
 
@@ -321,16 +333,17 @@
       font-size: 0.72rem;
       line-height: 1.65;
       padding: 0.6rem 0.85rem;
-      border: 1px solid var(--rule-soft);
+      border: none;
       background: var(--bg);
+      border-radius: var(--radius);
       flex: 1;
       min-width: 0;
       color: var(--ink);
     }
 
-    .bubble.bad  { border-color: var(--red-border);   background: var(--red-bg); }
-    .bubble.good { border-color: var(--green-border);  background: var(--green-bg); }
-    .bubble.ctx  { border: none; background: none; padding: 0.15rem 0; font-style: italic; color: var(--mid); }
+    .bubble.bad  { background: var(--red-bg); }
+    .bubble.good { background: var(--green-bg); }
+    .bubble.ctx  { background: none; padding: 0.15rem 0; font-style: italic; color: var(--mid); }
 
     .bubble b { font-weight: 500; display: block; margin-bottom: 0.25rem; }
 
@@ -356,14 +369,15 @@
       line-height: 1.55;
     }
 
-    .verdict.bad  { color: var(--red);   border: 1px dashed var(--red-border);   background: var(--red-bg); }
-    .verdict.good { color: var(--green); border: 1px dashed var(--green-border);  background: var(--green-bg); }
+    .verdict.bad  { background: var(--tag-bad);  color: var(--on-fill); border: none; border-radius: 0 0 var(--radius) var(--radius); }
+    .verdict.good { background: var(--tag-good); color: var(--on-fill); border: none; border-radius: 0 0 var(--radius) var(--radius); }
+
 
     /* ═══════════════════════════════════════════
        WHY IT MATTERS
     ═══════════════════════════════════════════ */
     .why-section {
-      border-top: 2px solid var(--ink);
+      border-top: 1px solid var(--rule);
       margin-top: 2rem;
       padding-top: 2rem;
       padding-bottom: 3rem;
@@ -487,16 +501,47 @@
       animation: none;
     }
 
-    /* ── Expanded content: 2-column essay + quotes ── */
+    /* ── Expanded content: essay with floated blockquotes ── */
     .why-expanded {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 3rem;
       padding-top: 2rem;
     }
 
-    @media (max-width: 800px) {
-      .why-expanded { grid-template-columns: 1fr; gap: 1.5rem; }
+    .why-text blockquote {
+      float: right;
+      width: 36%;
+      margin: 0 0 1.5rem 2.5rem;
+      font-family: var(--text);
+      border-left: 3px solid var(--mid);
+      padding: 0.75rem 1.1rem;
+      font-style: italic;
+      font-size: 0.96rem;
+      line-height: 1.55;
+      color: var(--ink);
+      clear: right;
+    }
+
+    .why-text blockquote p {
+      font-size: 0.96rem;
+      line-height: 1.55;
+      color: var(--ink);
+      margin-bottom: 0;
+      font-style: italic;
+    }
+
+    .why-text blockquote p:last-child {
+      margin-top: 0.5rem;
+      font-style: normal;
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--mid);
+    }
+
+    @media (max-width: 700px) {
+      .why-text blockquote {
+        float: none;
+        width: auto;
+        margin: 1.5rem 0;
+      }
     }
 
     .why-text p {
@@ -511,7 +556,7 @@
 
     .pull-quote {
       font-family: var(--text);
-      border-left: 3px solid var(--ink);
+      border-left: 3px solid var(--mid);
       padding: 0.75rem 1.1rem;
       font-style: italic;
       font-size: 0.96rem;
@@ -533,7 +578,7 @@
        RULES
     ═══════════════════════════════════════════ */
     .rules-section {
-      border-top: 2px solid var(--ink);
+      border-top: 1px solid var(--rule);
       padding-top: 2rem;
       margin-top: 0;
     }
@@ -548,37 +593,30 @@
       counter-reset: rule;
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 0;
-      border: 1.5px solid var(--blue-border);
-      background: var(--blue-bg);
+      gap: 8px;
+      background: var(--bg);
     }
 
     .rule {
       counter-increment: rule;
       padding: 1.1rem 1.2rem;
-      border-bottom: 1px solid var(--blue-border);
+      background: var(--blue-bg);
+      border-radius: var(--radius);
       display: grid;
       grid-template-columns: 2rem 1fr;
       gap: 0.75rem;
       align-items: first baseline;
     }
 
-    .rule:last-child { border-bottom: none; }
-
-    /* On wide screens, two columns means some rules have no bottom border */
     @media (min-width: 600px) {
       .rules { grid-template-columns: 1fr 1fr; }
-      .rule:nth-last-child(-n+2):nth-child(odd),
-      .rule:last-child { border-bottom: none; }
-      /* right column rules: add left border instead */
-      .rule:nth-child(even) { border-left: 1px solid var(--blue-border); }
     }
 
     .rule-num {
       font-family: var(--mono);
       font-size: 0.72rem;
       font-weight: 500;
-      color: var(--blue);
+      color: var(--rule-num);
     }
     .rule-num::before { content: counter(rule, decimal-leading-zero); }
 
@@ -596,7 +634,7 @@
       font-family: var(--mono);
       font-size: 0.8rem;
       line-height: 1.6;
-      color: var(--mid);
+      color: var(--ink);
     }
 
     .rule-text p b,
@@ -668,7 +706,7 @@
        FURTHER READING
     ═══════════════════════════════════════════ */
     .further-reading {
-      border-top: 2px solid var(--ink);
+      border-top: 1px solid var(--rule);
       padding-top: 2rem;
       margin-top: 2rem;
     }
@@ -828,16 +866,6 @@
           <div class="why-expanded">
             <div class="why-text">
               {{ section.bodyHtml | safe }}
-            </div>
-            <div class="why-quotes">
-              {% for quote in section.quotes %}
-              <div class="pull-quote">
-                {{ quote.text }}
-                <cite>
-                  {{ quote.cite }}{% if quote.citeLink %}, <a href="{{ quote.citeLink.href }}" target="_blank" rel="noopener"><em>{{ quote.citeLink.text }}</em></a>{% endif %}
-                </cite>
-              </div>
-              {% endfor %}
             </div>
           </div>
           <div class="why-peek-fade"></div>

@@ -1,5 +1,5 @@
 ---
-heading: Why it matters
+heading: Why it's rude
 table:
   headers:
     - ''
@@ -25,40 +25,18 @@ table:
         - |
           What you share directly influences your reputation.
           Sharing raw LLM output - especially unvetted - burns your credibility.
-        - |
+        - |-
           Eroding trust from LLM sloppypasta is the modern 'Boy Who Cried Wolf.'
-quotes:
-  - text: |
-      "For the longest time, writing was more expensive than reading.
-      If you encountered a body of written text, you could be sure that at the very least, a human spent some time writing it down.
-      The text used to have an innate proof-of-thought, a basic token of humanity."
-    cite: — Alex Martsinovich
-    citeLink:
-      href: https://distantprovince.by/posts/its-rude-to-show-ai-output-to-people/
-      text: It's rude to show AI output to people
-  - text: |
-      "Cognitive effort — and even getting painfully stuck — is likely important for fostering mastery."
-    cite: — Anthropic
-    citeLink:
-      href: https://www.anthropic.com/research/AI-assistance-coding-skills
-      text: How AI assistance impacts the formation of coding skills
-  - text: |
-      "A polished AI response feels dismissive even if the content is correct"
-    cite: — Blake Stockton
-    citeLink:
-      href: https://www.blakestockton.com/ai-writing-etiquette-manifesto/
-      text: AI Writing Etiquette Manifesto
-  - text: |
-      "I think it's rude to publish text that you haven't even read yourself.
-      I won't publish anything that will take someone longer to read than it took me to write."
-    cite: — Simon Willison
-    citeLink:
-      href: https://simonwillison.net/2023/Aug/27/wordcamp-llms/#personal-ai-ethics
-      text: Personal AI Ethics
 ---
 
 Sharing raw AI output is like eating junk food: it's easy and may feel good, but it's not in your best interest.
 You'll negatively influence your relationship with the recipient, and do yourself a disservice by reducing your own comprehension.
+
+> "For the longest time, writing was more expensive than reading.
+> If you encountered a body of written text, you could be sure that at the very least, a human spent some time writing it down.
+> The text used to have an innate proof-of-thought, a basic token of humanity."
+>
+> — Alex Martsinovich, [It's rude to show AI output to people](https://distantprovince.by/posts/its-rude-to-show-ai-output-to-people/)
 
 Before LLMs, writing took effort.
 Authors spent time and effort considering and selecting their words with intention; time and effort that was balanced by that spent by the audience as they read.
@@ -66,10 +44,18 @@ This balance is broken with LLMs; the effort to produce text is effectively free
 [The increasing verbosity of LLMs](https://epoch.ai/data-insights/output-length) further increases the effort asymmetry.
 In some circumstances (like pasting raw LLM output into a chat thread), the sloppypasta effectively becomes a filibuster, crowding out the existing conversation and blocking the viewport.
 
+> "Cognitive effort — and even getting painfully stuck — is likely important for fostering mastery."
+>
+> — Anthropic, [How AI assistance impacts the formation of coding skills](https://www.anthropic.com/research/AI-assistance-coding-skills)
+
 Writing is thinking.
 The writing process forces the author to work through their thoughts, building their comprehension and retention.
 [Multiple](https://www.media.mit.edu/publications/your-brain-on-chatgpt/) [studies](https://www.anthropic.com/research/AI-assistance-coding-skills) have found that delegating tasks to LLMs creates cognitive debt.
 Shortcutting thinking with LLMs ultimately reduces comprehension of and recall about the delegated subject.
+
+> "A polished AI response feels dismissive even if the content is correct"
+>
+> — Blake Stockton, [AI Writing Etiquette Manifesto](https://www.blakestockton.com/ai-writing-etiquette-manifesto/)
 
 Before LLMs, trust was the default.
 Authors wrote from their personal expertise and perspective, and readers could judge an author's understanding of the subject based on the coherence of their writing.
@@ -81,6 +67,11 @@ LLM responses, therefore, cannot be trusted by default and compound the effort a
 Beyond accuracy, LLMs write authoritatively with the tone and confidence of an expert.
 This adds further uncertainty to the reader's burden; they have no way to gauge the sender's actual level of expertise with the subject matter.
 The result is a further erosion of trust, because the AI's voice removes signal that recipients previously used to distinguish expertise from plausible-sounding slop.
+
+> "I think it's rude to publish text that you haven't even read yourself.
+> I won't publish anything that will take someone longer to read than it took me to write."
+>
+> — Simon Willison, [Personal AI Ethics](https://simonwillison.net/2023/Aug/27/wordcamp-llms/#personal-ai-ethics)
 
 Formerly, "Trust but verify" ruled.
 Readers would trust until that trust was broken; the author was trustworthy or they weren't.
