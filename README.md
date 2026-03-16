@@ -24,6 +24,19 @@ Structured data (nav links, scenarios, quotes) is YAML — either in `meta.yaml`
 `meta.yaml` is the single page manifest, recording section order, associated section content, and section-level metadata.
 The type nav links are derived from the ordered `types` section entries in `meta.yaml`, so type titles, anchors, and nav order come from the same source of truth.
 
+### Contributing translations
+
+Original English copy lives in `_content/en/`.
+To add a translation:
+
+1. Copy `_content/en/` to `_content/<locale>/` (e.g. `_content/fr/`).
+2. Set `meta.yaml`'s `lang` field to the target locale code (e.g. `fr`).
+3. Translate every `.md` file and the strings in `meta.yaml`.
+   Keep file names, front-matter keys, and section `kind` values unchanged — only translate the human-readable text.
+4. Run `npm run build` — the new locale is auto-discovered and built to `/<locale>/`.
+
+The root page automatically redirects visitors based on their browser language, falling back to English when there is no matching locale.
+
 ## Local preview
 
 ```bash

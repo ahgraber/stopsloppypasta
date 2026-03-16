@@ -6,6 +6,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{{ t.title }}</title>
   <meta name="description" content="{{ t.description }}" />
+  {% for altLocale, altData in i18n %}
+  <link rel="alternate" hreflang="{{ altLocale }}" href="/{{ altLocale }}/" />
+  {% endfor %}
+  <link rel="alternate" hreflang="x-default" href="/" />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍝</text></svg>" />
   <link rel="preconnect" href="https://fonts.bunny.net" />
   <link href="https://fonts.bunny.net/css?family=dm-serif-display:400,400i|dm-mono:300,400,500|lora:400,400i,500,600&display=swap" rel="stylesheet" />

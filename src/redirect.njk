@@ -1,0 +1,87 @@
+---
+permalink: /index.html
+---
+{% set fallback = "en" %}
+<!DOCTYPE html>
+<html lang="{{ fallback }}">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Redirecting…</title>
+  <script>
+    (function () {
+      var locales = {
+        {% for locale, localeData in i18n %}
+        "{{ locale | lower }}": "/{{ locale }}/"{% if not loop.last %},{% endif %}
+        {% endfor %}
+      };
+      var fallback = "{{ fallback }}";
+
+      function match(tag) {
+        tag = tag.toLowerCase();
+        if (locales[tag]) return tag;
+        var prefix = tag.split("-")[0];
+        if (locales[prefix]) return prefix;
+        return null;
+      }
+
+      var locale = match(navigator.language || "") || fallback;
+
+      location.replace(locales[locale] || locales[fallback] || "/en/");
+    })();
+  </script>
+  <style>
+    body {
+      margin: 0;
+      font-family: Georgia, serif;
+      background: #f8f8f8;
+      color: #111111;
+    }
+
+    main {
+      max-width: 42rem;
+      margin: 0 auto;
+      padding: 4rem 1.5rem;
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    p {
+      line-height: 1.6;
+      margin: 0 0 1rem;
+    }
+
+    ul {
+      margin: 1.25rem 0 0;
+      padding-left: 1.25rem;
+    }
+
+    li + li {
+      margin-top: 0.5rem;
+    }
+
+    a {
+      color: #1650a8;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Redirecting…</h1>
+    <p>If automatic language detection does not run, continue with the default English version or choose one of the available locales below.</p>
+    <p><a href="/{{ fallback }}/">Continue in English</a></p>
+    <ul>
+      {% for locale, localeData in i18n %}
+      <li><a href="/{{ locale }}/">{{ localeData.lang }}</a>{% if locale == fallback %} (default){% endif %}</li>
+      {% endfor %}
+    </ul>
+    <noscript>
+      <meta http-equiv="refresh" content="0;url=/{{ fallback }}/" />
+      <p>JavaScript is disabled — redirecting to the <a href="/{{ fallback }}/">English version</a>.</p>
+    </noscript>
+  </main>
+</body>
+</html>
