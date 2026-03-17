@@ -98,7 +98,7 @@ jobs:
 
       - name: Deploy preview
         id: deploy-preview
-        uses: cloudflare/wrangler-action@da0e0dfe58b7a431659754fdf3f186c529afbe65 # v3
+        uses: cloudflare/wrangler-action@80501a7b4d229a89df2bf50ac1bc99bc0f305ae9 # v3.0.2
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
