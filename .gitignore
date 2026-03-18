@@ -3,6 +3,10 @@
 # git
 .worktrees/
 
+# dot-directories, unless explicitly kept
+.*/
+!.github/
+
 # Editors
 .vscode/
 *.profraw
@@ -42,8 +46,6 @@ TODO.md
 node_modules/
 
 # ai
-.*mcp*/
-.claude/
 docs/superpowers
 
 # generated files

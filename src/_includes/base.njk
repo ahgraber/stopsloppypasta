@@ -1,18 +1,21 @@
 {% set t = i18n[locale] %}
 <!DOCTYPE html>
-<html lang="{{ t.lang }}">
+<html lang="{{ t.lang }}" dir="{{ t.dir }}">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{{ t.title }}</title>
   <meta name="description" content="{{ t.description }}" />
-  {% for altLocale, altData in i18n %}
-  <link rel="alternate" hreflang="{{ altLocale }}" href="/{{ altLocale }}/" />
+  {% for altSlug, altEntry in i18n._meta.locales %}
+  <link rel="alternate" hreflang="{{ altEntry.tag }}" href="/{{ altSlug }}/" />
   {% endfor %}
   <link rel="alternate" hreflang="x-default" href="/" />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍝</text></svg>" />
   <link rel="preconnect" href="https://fonts.bunny.net" />
   <link href="https://fonts.bunny.net/css?family=dm-serif-display:400,400i|dm-mono:300,400,500|lora:400,400i,500,600&display=swap" rel="stylesheet" />
+  {%- if t.fontFamily %}
+  <link href="https://fonts.bunny.net/css?family={{ t.fontFamily }}&display=swap" rel="stylesheet" />
+  {%- endif %}
   <style>
 
     /* ═══════════════════════════════════════════
@@ -46,9 +49,9 @@
       --link:      #484848;
       --radius:    2px;
 
-      --mono: 'DM Mono', 'Courier New', monospace;
-      --serif: 'DM Serif Display', Georgia, serif;
-      --text: 'Lora', Georgia, serif;
+      --mono: 'DM Mono', 'Noto Sans Mono', 'Courier New', monospace;
+      --serif: 'DM Serif Display', 'Noto Serif', 'Noto Serif Thai', 'Noto Naskh Arabic', 'Noto Sans Hebrew', 'Noto Sans SC', 'Noto Sans TC', 'Noto Sans JP', 'Noto Sans KR', 'Noto Sans Khmer', 'Noto Sans Myanmar', 'Noto Sans Lao', 'Noto Sans Georgian', 'Noto Sans Armenian', 'Noto Sans Devanagari', 'Noto Sans Bengali', 'Noto Sans Tamil', 'Noto Sans Telugu', 'Noto Sans Kannada', 'Noto Sans Malayalam', 'Noto Sans Gujarati', 'Noto Sans Gurmukhi', 'Noto Sans Sinhala', Georgia, serif;
+      --text: 'Lora', 'Noto Serif', 'Noto Serif Thai', 'Noto Naskh Arabic', 'Noto Sans Hebrew', 'Noto Sans SC', 'Noto Sans TC', 'Noto Sans JP', 'Noto Sans KR', 'Noto Sans Khmer', 'Noto Sans Myanmar', 'Noto Sans Lao', 'Noto Sans Georgian', 'Noto Sans Armenian', 'Noto Sans Devanagari', 'Noto Sans Bengali', 'Noto Sans Tamil', 'Noto Sans Telugu', 'Noto Sans Kannada', 'Noto Sans Malayalam', 'Noto Sans Gujarati', 'Noto Sans Gurmukhi', 'Noto Sans Sinhala', Georgia, serif;
     }
 
     @media (prefers-color-scheme: dark) {

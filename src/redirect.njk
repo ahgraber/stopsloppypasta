@@ -1,9 +1,10 @@
 ---
 permalink: /index.html
 ---
-{% set fallback = "en" %}
+{% set defaultLocale = i18n._meta.defaultLocale %}
 <!DOCTYPE html>
-<html lang="{{ fallback }}">
+{#- Page copy is English regardless of defaultLocale; lang/dir reflect the copy, not the redirect target #}
+<html lang="en" dir="ltr">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -11,23 +12,42 @@ permalink: /index.html
   <script>
     (function () {
       var locales = {
-        {% for locale, localeData in i18n %}
-        "{{ locale | lower }}": "/{{ locale }}/"{% if not loop.last %},{% endif %}
+        {% for slug, entry in i18n._meta.locales %}
+        "{{ slug }}": "/{{ slug }}/"{% if not loop.last %},{% endif %}
         {% endfor %}
       };
-      var fallback = "{{ fallback }}";
+
+      var aliases = {
+        {%- set aliasEntries = [] %}
+        {%- for slug, entry in i18n._meta.locales %}
+        {%- for alias in entry.aliases %}
+        {%- set _ = aliasEntries.push('"' + (alias | lower) + '": "' + slug + '"') %}
+        {%- endfor %}
+        {%- endfor %}
+        {{ aliasEntries | join(",\n        ") }}
+      };
+
+      var fallback = "{{ defaultLocale }}";
 
       function match(tag) {
         tag = tag.toLowerCase();
         if (locales[tag]) return tag;
+        if (aliases[tag]) return aliases[tag];
         var prefix = tag.split("-")[0];
         if (locales[prefix]) return prefix;
+        if (aliases[prefix]) return aliases[prefix];
         return null;
       }
 
-      var locale = match(navigator.language || "") || fallback;
+      var matched = null;
+      var langs = navigator.languages || [navigator.language || ""];
+      for (var i = 0; i < langs.length; i++) {
+        matched = match(langs[i]);
+        if (matched) break;
+      }
 
-      location.replace(locales[locale] || locales[fallback] || "/en/");
+      var locale = matched || fallback;
+      location.replace(locales[locale] || locales[fallback]);
     })();
   </script>
   <style>
@@ -71,16 +91,16 @@ permalink: /index.html
 <body>
   <main>
     <h1>Redirecting…</h1>
-    <p>If automatic language detection does not run, continue with the default English version or choose one of the available locales below.</p>
-    <p><a href="/{{ fallback }}/">Continue in English</a></p>
+    <p>If automatic language detection does not run, continue with the default version or choose one of the available locales below.</p>
+    <p><a href="/{{ defaultLocale }}/">Continue in {{ i18n[defaultLocale].label }}</a></p>
     <ul>
-      {% for locale, localeData in i18n %}
-      <li><a href="/{{ locale }}/">{{ localeData.lang }}</a>{% if locale == fallback %} (default){% endif %}</li>
+      {% for slug, entry in i18n._meta.locales %}
+      <li><a href="/{{ slug }}/">{{ entry.label }}</a>{% if slug == defaultLocale %} (default){% endif %}</li>
       {% endfor %}
     </ul>
     <noscript>
-      <meta http-equiv="refresh" content="0;url=/{{ fallback }}/" />
-      <p>JavaScript is disabled — redirecting to the <a href="/{{ fallback }}/">English version</a>.</p>
+      <meta http-equiv="refresh" content="0;url=/{{ defaultLocale }}/" />
+      <p>JavaScript is disabled — redirecting to the <a href="/{{ defaultLocale }}/">{{ i18n[defaultLocale].label }} version</a>.</p>
     </noscript>
   </main>
 </body>

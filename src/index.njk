@@ -1,8 +1,14 @@
----
-pagination:
-  data: i18n
-  size: 1
-  alias: locale
-permalink: "/{{ locale }}/index.html"
-layout: base.njk
+---js
+{
+  pagination: {
+    data: "i18n",
+    size: 1,
+    alias: "locale",
+    before(data) {
+      return data.filter((key) => !key.startsWith("_"))
+    },
+  },
+  permalink: "/{{ locale }}/index.html",
+  layout: "base.njk",
+}
 ---
