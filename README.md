@@ -29,13 +29,13 @@ The type nav links are derived from the ordered `types` section entries in `meta
 Original English copy lives in `_content/en/`.
 To add a translation:
 
-1. Copy `_content/en/` to `_content/<locale>/` (e.g. `_content/fr/`).
-2. Set `meta.yaml`'s `lang` field to the target locale code (e.g. `fr`).
+1. Add a locale entry to `_content/locales.yaml` with the locale's BCP 47 tag, URL slug, text direction, label, font key (if non-Latin script), and any detection aliases.
+2. Copy `_content/en/` to `_content/<slug>/` where `<slug>` matches the slug in the registry entry.
 3. Translate every `.md` file and the strings in `meta.yaml`.
    Keep file names, front-matter keys, and section `kind` values unchanged — only translate the human-readable text.
-4. Run `npm run build` — the new locale is auto-discovered and built to `/<locale>/`.
+4. Run `npm run build` — the build validates registry-content consistency and will fail if anything is misconfigured.
 
-The root page automatically redirects visitors based on their browser language, falling back to English when there is no matching locale.
+The root page automatically redirects visitors based on their browser language preferences, falling back to the default locale defined in `locales.yaml`.
 
 ## Local preview
 
