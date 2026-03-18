@@ -12,7 +12,42 @@
   <link rel="alternate" hreflang="x-default" href="/" />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍝</text></svg>" />
   <link rel="preconnect" href="https://fonts.bunny.net" />
+  {#- Base Latin fonts (always loaded) #}
   <link href="https://fonts.bunny.net/css?family=dm-serif-display:400,400i|dm-mono:300,400,500|lora:400,400i,500,600&display=swap" rel="stylesheet" />
+  {#- Per-locale Noto fonts for non-Latin scripts #}
+  {%- set localeFont = {
+    "th": "noto-serif-thai:400,400i,500,600",
+    "ar": "noto-naskh-arabic:400,500,600",
+    "fa": "noto-naskh-arabic:400,500,600",
+    "ur": "noto-naskh-arabic:400,500,600",
+    "he": "noto-sans-hebrew:400,500,600",
+    "zh-hans": "noto-sans-sc:400,500",
+    "zh-hant": "noto-sans-tc:400,500",
+    "zh": "noto-sans-sc:400,500",
+    "ja": "noto-sans-jp:400,500",
+    "ko": "noto-sans-kr:400,500",
+    "km": "noto-sans-khmer:400,500",
+    "my": "noto-sans-myanmar:400,500",
+    "el": "noto-serif:400,400i,500,600",
+    "lo": "noto-sans-lao:400,500,600",
+    "ka": "noto-sans-georgian:400,500,600",
+    "hy": "noto-sans-armenian:400,500,600",
+    "hi": "noto-sans-devanagari:400,500,600",
+    "bn": "noto-sans-bengali:400,500,600",
+    "ta": "noto-sans-tamil:400,500,600",
+    "te": "noto-sans-telugu:400,500,600",
+    "kn": "noto-sans-kannada:400,500,600",
+    "ml": "noto-sans-malayalam:400,500,600",
+    "gu": "noto-sans-gujarati:400,500,600",
+    "pa": "noto-sans-gurmukhi:400,500,600",
+    "si": "noto-sans-sinhala:400,500,600"
+  } -%}
+  {#- Look up by locale directory name (e.g. "th", "ar", "zh-hans").
+      Directory names must match a key in localeFont above.
+      For Chinese, use zh-hans / zh-hant directories to distinguish variants. #}
+  {%- if localeFont[locale] %}
+  <link href="https://fonts.bunny.net/css?family={{ localeFont[locale] }}&display=swap" rel="stylesheet" />
+  {%- endif %}
   <style>
 
     /* ═══════════════════════════════════════════
@@ -46,9 +81,9 @@
       --link:      #484848;
       --radius:    2px;
 
-      --mono: 'DM Mono', 'Courier New', monospace;
-      --serif: 'DM Serif Display', Georgia, serif;
-      --text: 'Lora', Georgia, serif;
+      --mono: 'DM Mono', 'Noto Sans Mono', 'Courier New', monospace;
+      --serif: 'DM Serif Display', 'Noto Serif', 'Noto Serif Thai', 'Noto Naskh Arabic', 'Noto Sans Hebrew', 'Noto Sans SC', 'Noto Sans TC', 'Noto Sans JP', 'Noto Sans KR', 'Noto Sans Khmer', 'Noto Sans Myanmar', 'Noto Sans Lao', 'Noto Sans Georgian', 'Noto Sans Armenian', 'Noto Sans Devanagari', 'Noto Sans Bengali', 'Noto Sans Tamil', 'Noto Sans Telugu', 'Noto Sans Kannada', 'Noto Sans Malayalam', 'Noto Sans Gujarati', 'Noto Sans Gurmukhi', 'Noto Sans Sinhala', Georgia, serif;
+      --text: 'Lora', 'Noto Serif', 'Noto Serif Thai', 'Noto Naskh Arabic', 'Noto Sans Hebrew', 'Noto Sans SC', 'Noto Sans TC', 'Noto Sans JP', 'Noto Sans KR', 'Noto Sans Khmer', 'Noto Sans Myanmar', 'Noto Sans Lao', 'Noto Sans Georgian', 'Noto Sans Armenian', 'Noto Sans Devanagari', 'Noto Sans Bengali', 'Noto Sans Tamil', 'Noto Sans Telugu', 'Noto Sans Kannada', 'Noto Sans Malayalam', 'Noto Sans Gujarati', 'Noto Sans Gurmukhi', 'Noto Sans Sinhala', Georgia, serif;
     }
 
     @media (prefers-color-scheme: dark) {
