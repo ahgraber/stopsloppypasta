@@ -22,6 +22,8 @@
       --bg:        #f8f8f8;
       --surface:   #ffffff;
       --ink:       #0d0d0d;
+      --ink-hover: #4a4a4a;
+      --on-ink-hover: #ffffff;
       --mid:       #555555;
       --rule:      #d8d8d8;
       --rule-soft: #ebebeb;
@@ -54,6 +56,8 @@
         --bg:        #111111;
         --surface:   #1c1c1c;
         --ink:       #f0f0f0;
+        --ink-hover: #bdbdbd;
+        --on-ink-hover: #000000;
         --mid:       #aaaaaa;
         --rule:      #333333;
         --rule-soft: #252525;
@@ -94,6 +98,37 @@
     a { color: var(--link); text-decoration: underline; }
     strong { font-weight: 600; }
     em { font-style: italic; }
+
+    .skip-link {
+      position: absolute;
+      top: 0.75rem;
+      left: 1.5rem;
+      z-index: 10;
+      padding: 0.75rem 1rem;
+      min-height: 44px;
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--bg);
+      background: var(--ink);
+      text-decoration: none;
+      border-radius: var(--radius);
+      transform: translateY(-140%);
+      transition: transform 0.15s ease, background-color 0.15s ease, color 0.15s ease;
+    }
+
+    .skip-link:focus,
+    .skip-link:focus-visible {
+      transform: translateY(0);
+      background: var(--ink-hover);
+      color: var(--on-ink-hover);
+      text-decoration: underline;
+      text-underline-offset: 0.18em;
+      outline: 2px solid var(--ink);
+      outline-offset: 2px;
+    }
 
     /* ═══════════════════════════════════════════
        HEADER
@@ -157,8 +192,11 @@
     }
 
     .type-nav a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
       font-family: var(--mono);
-      font-size: 0.72rem;
+      font-size: 0.75rem;
       font-weight: 500;
       letter-spacing: 0.08em;
       text-transform: uppercase;
@@ -166,12 +204,25 @@
       color: var(--bg);
       background: var(--ink);
       border: none;
-      padding: 0.3rem 0.7rem;
+      min-height: 44px;
+      padding: 0.65rem 0.9rem;
       border-radius: var(--radius);
-      transition: opacity 0.15s;
+      transition: background-color 0.15s ease, color 0.15s ease;
     }
 
-    .type-nav a:hover { opacity: 0.8; }
+    .type-nav a:hover,
+    .type-nav a:focus-visible {
+      background: var(--ink-hover);
+      color: var(--on-ink-hover);
+      text-decoration: underline;
+      text-underline-offset: 0.18em;
+    }
+
+    .type-nav a:focus-visible,
+    .why-summary:focus-visible {
+      outline: 2px solid var(--ink);
+      outline-offset: 2px;
+    }
 
     /* ═══════════════════════════════════════════
        MAIN CONTAINER
@@ -463,22 +514,29 @@
       align-items: center;
       justify-content: space-between;
       gap: 0.75rem;
-      padding: 0.45rem 1rem;
+      min-height: 44px;
+      padding: 0.65rem 1rem;
       background: var(--ink);
       color: var(--bg);
       border: none;
       width: 100%;
       font-family: var(--mono);
-      font-size: 0.72rem;
+      font-size: 0.75rem;
       font-weight: 500;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
       cursor: pointer;
       user-select: none;
-      transition: opacity 0.15s;
+      transition: background-color 0.15s ease, color 0.15s ease;
     }
 
-    .why-summary:hover { opacity: 0.85; }
+    .why-summary:hover,
+    .why-summary:focus-visible {
+      background: var(--ink-hover);
+      color: var(--on-ink-hover);
+      text-decoration: underline;
+      text-underline-offset: 0.18em;
+    }
 
     @keyframes chevron-pulse {
       0%, 100% { opacity: 1; }
@@ -593,7 +651,7 @@
       counter-reset: rule;
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 8px;
+      gap: 16px;
       background: var(--bg);
     }
 
@@ -748,22 +806,6 @@
     }
 
     /* ═══════════════════════════════════════════
-       FADE-IN ANIMATION
-    ═══════════════════════════════════════════ */
-    @keyframes up {
-      from { opacity: 0; transform: translateY(10px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    header       { animation: up 0.4s ease 0.05s both; }
-    .type-nav    { animation: up 0.4s ease 0.10s both; }
-    .intro       { animation: up 0.4s ease 0.15s both; }
-    .type-pair   { animation: up 0.4s ease 0.20s both; }
-    .why-section { animation: up 0.4s ease 0.25s both; }
-    .rules-section { animation: up 0.4s ease 0.30s both; }
-    .coda        { animation: up 0.4s ease 0.35s both; }
-
-    /* ═══════════════════════════════════════════
        MOBILE TWEAKS
     ═══════════════════════════════════════════ */
     @media (max-width: 480px) {
@@ -772,10 +814,23 @@
       footer { flex-direction: column; }
     }
 
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      .why-summary-chevron {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+
   </style>
   <script defer src="https://umami.ninerealmlabs.com/script.js" data-website-id="7d874a08-9ec3-489e-883d-b98d74d826f8"></script>
 </head>
 <body>
+
+<a class="skip-link" href="#main-content">{{ t.nav.skipToContent or "Skip to main content" }}</a>
 
 <header>
   <div class="header-inner">
@@ -794,7 +849,7 @@
   {% endfor %}
 </nav>
 
-<main>
+<main id="main-content">
   {% for section in t.sections %}
   {% if section.kind == "intro" %}
   <div class="intro" id="intro">
