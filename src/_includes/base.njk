@@ -1,52 +1,20 @@
 {% set t = i18n[locale] %}
 <!DOCTYPE html>
-<html lang="{{ t.lang }}">
+<html lang="{{ t.lang }}" dir="{{ t.dir }}">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{{ t.title }}</title>
   <meta name="description" content="{{ t.description }}" />
-  {% for altLocale, altData in i18n %}
-  <link rel="alternate" hreflang="{{ altLocale }}" href="/{{ altLocale }}/" />
+  {% for altSlug, altEntry in i18n._meta.locales %}
+  <link rel="alternate" hreflang="{{ altEntry.tag }}" href="/{{ altSlug }}/" />
   {% endfor %}
   <link rel="alternate" hreflang="x-default" href="/" />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍝</text></svg>" />
   <link rel="preconnect" href="https://fonts.bunny.net" />
-  {#- Base Latin fonts (always loaded) #}
   <link href="https://fonts.bunny.net/css?family=dm-serif-display:400,400i|dm-mono:300,400,500|lora:400,400i,500,600&display=swap" rel="stylesheet" />
-  {#- Per-locale Noto fonts for non-Latin scripts #}
-  {%- set localeFont = {
-    "th": "noto-serif-thai:400,400i,500,600",
-    "ar": "noto-naskh-arabic:400,500,600",
-    "fa": "noto-naskh-arabic:400,500,600",
-    "ur": "noto-naskh-arabic:400,500,600",
-    "he": "noto-sans-hebrew:400,500,600",
-    "zh-hans": "noto-sans-sc:400,500",
-    "zh-hant": "noto-sans-tc:400,500",
-    "zh": "noto-sans-sc:400,500",
-    "ja": "noto-sans-jp:400,500",
-    "ko": "noto-sans-kr:400,500",
-    "km": "noto-sans-khmer:400,500",
-    "my": "noto-sans-myanmar:400,500",
-    "el": "noto-serif:400,400i,500,600",
-    "lo": "noto-sans-lao:400,500,600",
-    "ka": "noto-sans-georgian:400,500,600",
-    "hy": "noto-sans-armenian:400,500,600",
-    "hi": "noto-sans-devanagari:400,500,600",
-    "bn": "noto-sans-bengali:400,500,600",
-    "ta": "noto-sans-tamil:400,500,600",
-    "te": "noto-sans-telugu:400,500,600",
-    "kn": "noto-sans-kannada:400,500,600",
-    "ml": "noto-sans-malayalam:400,500,600",
-    "gu": "noto-sans-gujarati:400,500,600",
-    "pa": "noto-sans-gurmukhi:400,500,600",
-    "si": "noto-sans-sinhala:400,500,600"
-  } -%}
-  {#- Look up by locale directory name (e.g. "th", "ar", "zh-hans").
-      Directory names must match a key in localeFont above.
-      For Chinese, use zh-hans / zh-hant directories to distinguish variants. #}
-  {%- if localeFont[locale] %}
-  <link href="https://fonts.bunny.net/css?family={{ localeFont[locale] }}&display=swap" rel="stylesheet" />
+  {%- if t.fontFamily %}
+  <link href="https://fonts.bunny.net/css?family={{ t.fontFamily }}&display=swap" rel="stylesheet" />
   {%- endif %}
   <style>
 
