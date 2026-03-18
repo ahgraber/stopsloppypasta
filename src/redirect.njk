@@ -3,7 +3,8 @@ permalink: /index.html
 ---
 {% set defaultLocale = i18n._meta.defaultLocale %}
 <!DOCTYPE html>
-<html lang="{{ i18n[defaultLocale].lang }}" dir="{{ i18n[defaultLocale].dir }}">
+{#- Page copy is English regardless of defaultLocale; lang/dir reflect the copy, not the redirect target #}
+<html lang="en" dir="ltr">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />

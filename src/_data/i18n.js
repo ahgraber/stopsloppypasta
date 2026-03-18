@@ -151,6 +151,9 @@ function loadRegistry() {
   }
 
   // Validate each locale entry
+  const seenTags = new Map() // tag → slug (detect duplicates)
+  const seenAliases = new Map() // alias → slug (detect collisions)
+
   for (const [slug, entry] of Object.entries(registry.locales)) {
     if (!entry.tag) errors.push(`locales.yaml: locale '${slug}' missing 'tag'`)
     if (!entry.slug) errors.push(`locales.yaml: locale '${slug}' missing 'slug'`)
@@ -159,6 +162,29 @@ function loadRegistry() {
     if (!entry.dir || !["ltr", "rtl"].includes(entry.dir))
       errors.push(`locales.yaml: locale '${slug}' missing or invalid 'dir' (must be ltr or rtl)`)
     if (!entry.label) errors.push(`locales.yaml: locale '${slug}' missing 'label'`)
+
+    // Tag uniqueness
+    if (entry.tag) {
+      const prev = seenTags.get(entry.tag)
+      if (prev) errors.push(`locales.yaml: duplicate tag '${entry.tag}' in locales '${prev}' and '${slug}'`)
+      else seenTags.set(entry.tag, slug)
+    }
+
+    // Aliases must be an array of strings; check for collisions across locales
+    if (!Array.isArray(entry.aliases)) {
+      errors.push(`locales.yaml: locale '${slug}' aliases must be an array (got ${typeof entry.aliases})`)
+    } else {
+      for (const alias of entry.aliases) {
+        if (typeof alias !== "string") {
+          errors.push(`locales.yaml: locale '${slug}' has non-string alias: ${JSON.stringify(alias)}`)
+          continue
+        }
+        const key = alias.toLowerCase()
+        const prev = seenAliases.get(key)
+        if (prev) errors.push(`locales.yaml: alias '${alias}' collides — claimed by both '${prev}' and '${slug}'`)
+        else seenAliases.set(key, slug)
+      }
+    }
 
     // Resolve font from FONT_MAP if entry.font is a key, or null for Latin-default
     entry.fontFamily = entry.font ? FONT_MAP[entry.font] || entry.font : FONT_MAP[slug] || null
