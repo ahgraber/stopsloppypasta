@@ -87,7 +87,7 @@ function loadLocale(contentDir) {
   const sections = (meta.sections ?? []).map((section) => buildSection(contentDir, section))
 
   return {
-    lang: meta.lang,
+    // lang, dir, label, fontFamily are set by the registry in the export default function
     title: meta.title,
     description: meta.description,
     header: {
