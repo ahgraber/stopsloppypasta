@@ -98,7 +98,7 @@ jobs:
 
       - name: Deploy preview
         id: deploy-preview
-        uses: cloudflare/wrangler-action@80501a7b4d229a89df2bf50ac1bc99bc0f305ae9 # v3.0.2
+        uses: cloudflare/wrangler-action@da0e0dfe58b7a431659754fdf3f186c529afbe65 # v3.14.1
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
@@ -106,6 +106,7 @@ jobs:
           command: >-
             pages deploy _site --project-name=stopsloppypasta
             --branch=pr-${{ needs.authorize.outputs.pr_number }}
+            --commit-dirty=true
 
       - name: Find or create preview comment
         uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
