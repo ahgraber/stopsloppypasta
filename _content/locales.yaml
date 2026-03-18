@@ -1,0 +1,18 @@
+# Locale Registry — the single source of truth for all i18n configuration.
+# Every locale-aware behavior in the build and templates reads from this file.
+#
+# To add a locale:
+#   1. Add an entry below
+#   2. Create a matching content directory: _content/<slug>/
+#   3. Run `npm run build` to validate
+
+defaultLocale: en
+
+locales:
+  en:
+    tag: en            # BCP 47 canonical tag (used in <html lang>, hreflang)
+    slug: en           # URL path segment and content directory name (always lowercase)
+    dir: ltr           # Text direction: ltr or rtl
+    label: English     # Human-readable label for locale switcher / redirect page
+    font:              # Font key for non-Latin script (null = Latin defaults only)
+    aliases: []        # navigator.language values that should resolve to this locale
