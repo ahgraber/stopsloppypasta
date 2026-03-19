@@ -4,6 +4,12 @@ on:
   pull_request:
     types:
       - closed
+    paths:
+      - "_content/**"
+      - "src/**"
+      - "eleventy.config.js"
+      - "package.json"
+      - "package-lock.json"
 
 jobs:
   cleanup:
