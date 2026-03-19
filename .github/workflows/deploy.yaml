@@ -33,7 +33,7 @@ jobs:
 
       - name: Deploy to production
         id: deploy-prod
-        uses: cloudflare/wrangler-action@80501a7b4d229a89df2bf50ac1bc99bc0f305ae9 # v3.0.2
+        uses: cloudflare/wrangler-action@09fc6b504568cf179b085df24393f237fea6c7f6 # v3.1.1
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
