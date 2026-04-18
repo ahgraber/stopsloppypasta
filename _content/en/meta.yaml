@@ -50,6 +50,8 @@ sections:
         text: "Using AI Responsibly in Development & Collaboration"
       - href: "https://www.blakestockton.com/ai-writing-etiquette-manifesto/"
         text: "AI Writing Etiquette Manifesto"
+      - href: "https://rfd.shared.oxide.computer/rfd/0576#_llms_as_writers"
+        text: "Using LLMs at Oxide: LLMs as Writers"
 
 footer:
   source:
