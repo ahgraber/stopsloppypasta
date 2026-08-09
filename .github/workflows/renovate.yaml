@@ -43,7 +43,7 @@ jobs:
     name: Renovate
     runs-on: ubuntu-latest
     permissions:
-      packages: read
+      packages: read # GHCR lookups for container datasources
     steps:
       - name: Generate Token
         uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
@@ -51,11 +51,28 @@ jobs:
         with:
           app-id: "${{ secrets.BOT_APP_ID }}"
           private-key: "${{ secrets.BOT_APP_PRIVATE_KEY }}"
+          # Renovate's platform requirements, minus the org-level scopes it only
+          # needs for autodiscovery beyond this repo
+          # (ref: https://docs.renovatebot.com/modules/platform/github/):
+          #   contents             - commit branches
+          #   issues               - dependency dashboard
+          #   workflows            - update files under .github/workflows
+          #   vulnerability-alerts - read Dependabot alerts to raise security PRs
+          #   statuses             - the `renovate/stability-days` check that
+          #                          `minimumReleaseAge` gates merges on
+          permission-contents: write
+          permission-issues: write
+          permission-pull-requests: write
+          permission-workflows: write
+          permission-vulnerability-alerts: read
+          permission-statuses: write
 
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          # Renovate clones the repo itself; no git credentials needed here
           token: "${{ steps.app-token.outputs.token }}"
+          persist-credentials: false
 
       - name: Renovate
         uses: renovatebot/github-action@316d7cd859606d6039a2182b7d69199e9b036835 # v46.2.1
@@ -66,8 +83,10 @@ jobs:
           RENOVATE_DRY_RUN: "${{ inputs.dryRun }}"
           RENOVATE_INTERNAL_CHECKS_FILTER: strict
           RENOVATE_PLATFORM: github
-          RENOVATE_PLATFORM_COMMIT: true
+          RENOVATE_PLATFORM_COMMIT: enabled
         with:
-          configurationFile: .github/renovate.json5
+          ## Intentionally rely on repository config discovery for .github/renovate.json5.
+          ## Setting configurationFile here can cause the same config to be loaded twice.
+          # configurationFile: .github/renovate.json5
           token: "${{ steps.app-token.outputs.token }}"
           renovate-version: "${{ inputs.version || 'latest' }}"
