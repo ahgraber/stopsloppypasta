@@ -27,7 +27,7 @@ jobs:
         run: npm ci
 
       - name: Run prek on changed files
-        uses: j178/prek-action@5337cb91e0fa35a7ff31b9ca345126d8bbbcdf16 # v2.0.6
+        uses: j178/prek-action@1382ad72dea72f9d53832f2bcb65b3e87a947204 # v3.0.1
         with:
           extra-args: >-
             ${{ github.event_name == 'pull_request'
