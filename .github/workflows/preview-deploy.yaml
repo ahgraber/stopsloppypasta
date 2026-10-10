@@ -102,7 +102,7 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          wranglerVersion: "4.96.0"
+          wranglerVersion: "4.97.0"
           command: >-
             pages deploy _site --project-name=stopsloppypasta
             --branch=pr-${{ needs.authorize.outputs.pr_number }}
