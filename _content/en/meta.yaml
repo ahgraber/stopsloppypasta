@@ -46,8 +46,6 @@ sections:
         text: "Personal AI Ethics by Simon Willison"
       - href: "https://noellevandijk.com/ai-manifesto/"
         text: "AI Manifesto"
-      - href: "https://ai-manifesto.dev/"
-        text: "Using AI Responsibly in Development & Collaboration"
       - href: "https://www.blakestockton.com/ai-writing-etiquette-manifesto/"
         text: "AI Writing Etiquette Manifesto"
 
