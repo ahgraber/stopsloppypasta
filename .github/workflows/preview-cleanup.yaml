@@ -68,7 +68,7 @@ jobs:
             const deployments = [];
 
             for (let page = 1; ; page += 1) {
-              const response = await request(`${baseUrl}?env=preview&page=${page}&per_page=100`);
+              const response = await request(`${baseUrl}?env=preview&page=${page}&per_page=25`);
 
               if (!response.ok) {
                 core.setFailed(`Failed to list preview deployments: ${JSON.stringify(response.payload)}`);
